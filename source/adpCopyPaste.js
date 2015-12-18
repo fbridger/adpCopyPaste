@@ -5,7 +5,16 @@ function setInputValue(anchor, value) {
 	$("div#EditLayer input").val(value);
 }
 
-function getValue($anchor) {
+function getValue($row, selector) {
+
+	var $activeInput = $("div#EditLayer input[id*='" + selector + "'");
+
+	if ($activeInput.length === 1) {
+		return $activeInput.val();
+	}
+
+	var $anchor = $row.find('a[id*="' + selector +'"]');
+
 	if ($anchor.attr('title') && $anchor.attr('title') !== ''){
 		return $anchor.attr('title');
 	}
@@ -38,12 +47,15 @@ function addCopyButtons(){
 
 	var copyButton = $("<a href='javascript:void(0);' class='btn-copy'><img src=" + copyImgURL + " title='Copy entire Row'></img></a>");
 	copyButton.click(function (){
+
 		var copyRow = $(this).parent().parent();
 		
-		document.copiedHours = getValue(copyRow.find('a[id*="TOTALHOURS"]'));
-		document.copiedEarningsCode = getValue(copyRow.find('a[id*="31_"]'));
-		document.copiedCustomer = getValue(copyRow.find('a[id*="17_"]'));
-		document.copiedProject = getValue(copyRow.find('a[id*="18_"]'));
+		copyRow.find('input:checkbox').focus();
+
+		document.copiedHours = getValue(copyRow, "TOTALHOURS");
+		document.copiedEarningsCode = getValue(copyRow, "31_");
+		document.copiedCustomer = getValue(copyRow, "17_");
+		document.copiedProject = getValue(copyRow, "18_");
 
 		addPasteButtons();
 	});

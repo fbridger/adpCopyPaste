@@ -2,7 +2,7 @@
   "name": "ADP Copy & Paste",
   "short_name": "ADP Copy & Paste",
   "description": "Allows to copy and paste rows in ADP",
-  "version": "1.0",
+  "version": "1.0.1",
   "author": "Federico Bridger",
   "homepage_url": "https://ar.linkedin.com/in/federicobridger",
   "icons": { "16": "icon16.png",
