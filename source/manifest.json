@@ -1,0 +1,24 @@
+{
+  "name": "ADP Copy & Paste",
+  "short_name": "ADP Copy & Paste",
+  "description": "Allows to copy and paste rows in ADP",
+  "version": "1.0",
+  "author": "Federico Bridger",
+  "homepage_url": "https://ar.linkedin.com/in/federicobridger",
+  "icons": { "16": "icon16.png",
+           "48": "icon48.png",
+          "128": "icon128.png" },
+  "content_scripts": [
+    {
+      "matches": ["https://*.adp.com/ezLaborManagerNet/UI4/Standard/EmployeeServices/TimeEntry/*"],
+      "css": ["adpCopyPaste.css"],
+      "js": ["jquery.js", "adpCopyPaste.js"],
+      "run_at": "document_end",
+      "all_frames": true
+    }
+  ],
+  "web_accessible_resources": [
+    "images/*.png"
+  ],
+  "manifest_version": 2
+}
