@@ -7,3 +7,8 @@ Chrome Extension to easily copy and paste rows in ADP > My Timecard
 https://chrome.google.com/webstore/detail/adp-copy-paste/pafppnkimfmkcajfkhikbjpajpmlafgb
 
 
+## Roadmap
+
+* Pre-fill timecard hours, earnings code, customer and project ignoring Saturdays and Sundays
+
+* Automatically detect holidays
