@@ -15,11 +15,13 @@ function getValue($row, selector) {
 
 	var $anchor = $row.find('a[id*="' + selector +'"]');
 
-	if ($anchor.attr('title') && $anchor.attr('title') !== ''){
-		return $anchor.attr('title');
+	var text = $anchor.text();
+
+	if (!text.endsWith('...')) {
+		return text;
 	}
 
-	return $anchor.text();
+	return $anchor.attr('title');
 }
 
 function addPasteButtons() {
