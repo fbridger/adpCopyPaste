@@ -4,3 +4,19 @@
 .btn-paste {
 	margin-left: 5px;
 }
+tr.holiday {
+	background-color: #D4F2A8 !important;
+}
+tr.non-workable a {
+	background-color: #FFD0D0 !important;
+}
+tr.non-workable {
+	color: #A80000;
+}
+.holiday td:nth-child(2) {
+	padding: 0;
+}
+.icn-holiday {
+	vertical-align: bottom;
+	margin-left: 5px;
+}
