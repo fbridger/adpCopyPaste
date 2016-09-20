@@ -1,17 +1,25 @@
-.btn-copy {
-	margin-left: 5px;
-}
-.btn-paste {
-	margin-left: 5px;
-}
-tr.holiday {
+tr.holiday a[id^="TOTALHOURS_"],
+tr.holiday a[id^="31_"],
+tr.holiday a[id^="17_"],
+tr.holiday a[id^="18_"]{
 	background-color: #D4F2A8 !important;
 }
-tr.non-workable a {
+tr.non-workable a[id^="TOTALHOURS_"],
+tr.non-workable a[id^="31_"],
+tr.non-workable a[id^="17_"],
+tr.non-workable a[id^="18_"]
+{
 	background-color: #FFD0D0 !important;
 }
 tr.non-workable {
 	color: #A80000;
+}
+tr td .btn-copy,
+tr td .btn-paste {
+	margin-left: 5px;	
+}
+tr td .btn-clone {
+	margin-right: 5px;
 }
 .holiday td:nth-child(2) {
 	padding: 0;
