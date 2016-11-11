@@ -48,6 +48,11 @@ var ar2016 =[{
 	"motivo": "Feriado Puente Turistico",
 	"tipo": "puente"
 },{
+	"dia": 8,
+	"mes": 12 ,
+	"motivo": "Inmaculada Concepción de María",
+	"tipo": "inamovible"
+},{
 	"dia": 22,
 	"mes": 4 ,
 	"motivo": "Pascuas Judías",
@@ -119,6 +124,11 @@ var ar2016 =[{
 		"tipo": "religion",
 		"religion": "judaísmo"
 	}
+},{
+	"dia": 25,
+	"mes": 12,
+	"motivo": "Navidad",
+	"tipo": "inamovible"
 }];
 
 addHolidays("ar", 2016, ar2016);

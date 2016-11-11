@@ -1,6 +1,14 @@
 function addHolidays() {
-	
-	var holidays = getHolidays("ar", new Date().getFullYear());
+
+	var yearToUse;	
+	var beginDateVal = $('#BeginDate').val();
+
+	if (beginDateVal.trim() != '')
+		yearToUse = new Date(beginDateVal).getFullYear();
+	else
+		yearToUse = new Date().getFullYear();
+
+	var holidays = getHolidays("ar", yearToUse);
 
 	for (var i = 0; i < holidays.length; i++) {
 		var holiday = holidays[i];
@@ -11,7 +19,7 @@ function addHolidays() {
 
 		var holidayImgURL = chrome.extension.getURL("images/holiday.png");
 
-		var dateString = padDayMonth(holiday.mes) + '/' + padDayMonth(day) + '/2016';
+		var dateString = padDayMonth(holiday.mes) + '/' + padDayMonth(day) + '/' + yearToUse;
 
 		var item = $("#TCMGridTable div.W8:contains('"+ dateString +"')");
 
