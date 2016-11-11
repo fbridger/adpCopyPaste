@@ -1,8 +1,83 @@
+var autoPopulateKeys = ['hours', 'earningsCode', 'client', 'project'];
+var hoursSelector = 'a[id*="TOTALHOURS"]';
+var earningsCodeSelector = 'a[id*="31_"]';
+var customerSelector = 'a[id*="17_"]';
+var projectSelector = 'a[id*="18_"]';
 
-function setInputValue(anchor, value) {
+function save(hours, earningsCode, client, project) {	
+	chrome.storage.sync.set({
+		'hours': hours,
+		'earningsCode': earningsCode,
+		'client': client, 
+		'project': project});
+}
 
-	anchor.click();
-	$("div#EditLayer input").val(value);
+function addAutoPopulateUI(){
+
+	if ($('a.DoEdit').length == 0  || $('#divStatusText').length > 0)
+		return;
+
+	chrome.storage.sync.get(autoPopulateKeys, function(result){
+
+		if (!result)
+			return;
+
+		if (isEmpty(result.hours) && isEmpty(result.earningsCode) && isEmpty(result.client) && isEmpty(result.project))
+			return;
+
+		document.copiedHours = result.hours;
+		document.copiedEarningsCode = result.earningsCode;
+		document.copiedCustomer = result.client;
+		document.copiedProject = result.project;
+
+		var imgURL = chrome.extension.getURL("images/icon16.png");
+
+		var imgHtml = '<img src="' + imgURL + '" style="vertical-align:middle"/>';
+
+		var uiHtml = '<div class="auto-populate">';		
+		uiHtml += '<h3>' + imgHtml + ' ADP Copy &amp; Paste</h3>';
+		uiHtml += '<p>Would you like to fill your timecard using the following information?</p>';
+		uiHtml += '<table cellspacing="0" cellpadding="0" border="0" class="TBL_D1">';
+		uiHtml += '<tr><th>Hours</th><th>Earnings Code</th><th>Customer</th><th>Project</th></tr>';
+		uiHtml += '<tr>';
+		uiHtml += '<td>' + result.hours + '</td>';
+		uiHtml += '<td>' + result.earningsCode + '</td>';
+		uiHtml += '<td>' + result.client + '</td>';
+		uiHtml += '<td>' + result.project + '</td>';		
+		uiHtml += '</tr></table>';
+		uiHtml += '<button class="yes">Yes, fill the timecard!</button>';
+		uiHtml += '<button class="no">No, maybe next time.</button>';
+		uiHtml += '</div>';
+
+		$('.TBL_Toolbar').after(uiHtml);
+
+		$('div.auto-populate button.yes').click(function() {
+			autoPopulate();			
+			$('div.auto-populate button.no').click();
+			return false;
+		});
+
+		$('div.auto-populate button.no').click(function() {			
+			$('#tcGrid').click();
+			$('div.auto-populate').hide();			
+			$(document).scrollTop(0);
+			return false;
+		})
+
+	});
+
+}
+
+function autoPopulate(){
+	
+	$("#TCMGridTable tbody tr.workable").each(function(index, element) {
+		pasteFromClipboard($(element));
+	});
+
+	$("#TCMGridTable tbody tr.holiday").not('.non-workable').each(function(index, element) {
+		pasteToRow($(element), document.copiedHours, 'HOLIDAY', document.copiedCustomer, document.copiedProject);
+	});
+
 }
 
 function getValue($row, selector) {
@@ -26,10 +101,24 @@ function getValue($row, selector) {
 
 function pasteFromClipboard($rowToPaste) {
 
-	setInputValue($rowToPaste.find('a[id*="TOTALHOURS"]').get(0), document.copiedHours);
-	setInputValue($rowToPaste.find('a[id*="31_"]').get(0), document.copiedEarningsCode);
-	setInputValue($rowToPaste.find('a[id*="17_"]').get(0), document.copiedCustomer);
-	setInputValue($rowToPaste.find('a[id*="18_"]').get(0), document.copiedProject);
+	pasteToRow($rowToPaste, document.copiedHours, document.copiedEarningsCode, document.copiedCustomer, document.copiedProject);
+
+}
+
+function pasteToRow($rowToPaste, hours, earningsCode, customer, project) {
+	setInputValue($rowToPaste.find(hoursSelector).get(0), hours);
+	setInputValue($rowToPaste.find(earningsCodeSelector).get(0), earningsCode);
+	setInputValue($rowToPaste.find(customerSelector).get(0), customer);
+	setInputValue($rowToPaste.find(projectSelector).get(0), project);
+}
+
+function setInputValue(anchor, value) {
+
+	if (isEmpty(value))
+		return;
+
+	anchor.click();
+	$("div#EditLayer input").val(value);
 }
 
 function addPasteButtons() {
@@ -55,6 +144,8 @@ function copyToClipboard($rowToCopy) {
 	document.copiedEarningsCode = getValue($rowToCopy, "31_");
 	document.copiedCustomer = getValue($rowToCopy, "17_");
 	document.copiedProject = getValue($rowToCopy, "18_");
+
+	save(document.copiedHours, document.copiedEarningsCode, document.copiedCustomer, document.copiedProject);
 }
 
 function addCopyButtons() {
@@ -89,16 +180,21 @@ function addCloneButtons() {
 		
 		copyToClipboard(copyRow);
 
-		$("#TCMGridTable tbody tr.workable").each(function(index, element) {
-
-			pasteFromClipboard($(element));
-
-		});
+		autoPopulate();
+		
 	});
 	$("#TCMGridTable a[id*='IMGNOTELINK_']").before(button);
 	$('a.btn-clone img[title]').qtip({style: {classes:'qtip-dark'},content:{title:'Stormtrooper Copy & Paste'}, position: {my: 'bottom right', at: 'top left'}});
 }
 
+function isEmpty(value){
+	if (value && value.trim() != '')
+		return false;
+
+	return true;
+}
+
 addCloneButtons();
 addPasteButtons();
 addCopyButtons();
+addAutoPopulateUI();

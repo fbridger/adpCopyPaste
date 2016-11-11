@@ -28,3 +28,19 @@ tr td .btn-clone {
 	vertical-align: bottom;
 	margin-left: 5px;
 }
+div.auto-populate {
+	margin: 5px;
+	padding: 10px;
+	text-align: center;
+	background-color: rgba(237, 230, 196, 0.23);
+	border: 1px solid black;
+}
+div.auto-populate table {
+	margin-top: 10px;
+	margin-bottom: 10px;
+	margin-left: auto;
+ 	margin-right: auto;
+}
+div.auto-populate button {	
+    margin: 5px;
+}

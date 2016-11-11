@@ -2,7 +2,7 @@
   "name": "ADP Copy & Paste",
   "short_name": "ADP Copy & Paste",
   "description": "Allows to copy and paste rows in ADP",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "author": "Federico Bridger",
   "homepage_url": "https://ar.linkedin.com/in/federicobridger",
   "icons": { "16": "icon16.png",
@@ -12,13 +12,16 @@
     {
       "matches": ["https://*.adp.com/ezLaborManagerNet/UI4/Standard/EmployeeServices/TimeEntry/*"],
       "css": ["adpCopyPaste.css", "jquery.qtip.min.css"],
-      "js": ["jquery.js", "jquery.qtip.min.js", "nonWorkableDays.js", "adpCopyPaste.js", "holidaysStore.js", "holidaysArgentina2016.js", "Holidays.js"],
+      "js": ["jquery.js", "jquery.qtip.min.js", "nonWorkableDays.js", "adpCopyPaste.js", "holidaysStore.js", "holidaysArgentina2016.js", "holidaysArgentina2017.js", "Holidays.js"],
       "run_at": "document_end",
       "all_frames": true
     }
   ],
   "web_accessible_resources": [
     "images/*.png"
+  ],
+  "permissions": [
+    "storage"
   ],
   "manifest_version": 2
 }
