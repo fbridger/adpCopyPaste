@@ -12,8 +12,17 @@ GitHub repository: https://github.com/pjnovas/nolaborables
 
 https://chrome.google.com/webstore/detail/adp-copy-paste/pafppnkimfmkcajfkhikbjpajpmlafgb
 
+## Contributors
+
+Thanks a lot to Jaime Giraldo (https://github.com/sposmen) for adding holidays for Colombia and implementing the foundation for other countries.
 
 ## Releases
+
+### Version 1.0.6
+Added Colombia, Uruguay and Venezuela holidays
+
+### Version 1.0.5
+Automatically fill timecard based on stored information. Holidays earning code is now automatically set
 
 ### Version 1.0.4
 
