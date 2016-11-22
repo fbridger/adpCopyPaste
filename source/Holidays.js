@@ -1,57 +1,78 @@
 function addHolidays() {
 
-	var yearToUse;	
-	var beginDateVal = $('#BeginDate').val();
+    var yearToUse;
+    var beginDateVal = $('#BeginDate').val();
 
-	if (beginDateVal.trim() != '')
-		yearToUse = new Date(beginDateVal).getFullYear();
-	else
-		yearToUse = new Date().getFullYear();
+    if (beginDateVal.trim() != '')
+        yearToUse = new Date(beginDateVal).getFullYear();
+    else
+        yearToUse = new Date().getFullYear();
+    var holidays = getHolidays(getCountry(), yearToUse);
 
-	var holidays = getHolidays("ar", yearToUse);
+    for (var i = 0; i < holidays.length; i++) {
+        var holiday = holidays[i];
+        var day = holiday.dia;
+        if (holiday.traslado) {
+            day = holiday.traslado;
+        }
 
-	for (var i = 0; i < holidays.length; i++) {
-		var holiday = holidays[i];
-		var day = holiday.dia;
-		if (holiday.traslado){
-			day = holiday.traslado;
-		}
+        var holidayImgURL = chrome.extension.getURL("images/holiday.png");
 
-		var holidayImgURL = chrome.extension.getURL("images/holiday.png");
+        var dateString = padDayMonth(holiday.mes) + '/' + padDayMonth(day) + '/' + yearToUse;
 
-		var dateString = padDayMonth(holiday.mes) + '/' + padDayMonth(day) + '/' + yearToUse;
+        var item = getGridTable().find("div.W8:contains('" + dateString + "')");
 
-		var item = $("#TCMGridTable div.W8:contains('"+ dateString +"')");
+        if (item.length > 0) {
+            var title = '';
+            title += holiday.motivo;
+            if (holiday.traslado) {
+                title += " (feriado trasladado del " + holiday.dia + ")";
+            }
 
-		if (item.length > 0) {
-			var title = '';
-			title += holiday.motivo;
-			if (holiday.traslado){
-				title += " (feriado trasladado del " + holiday.dia + ")";
-			}
+            if (holiday.opcional && holiday.opcional.religion) {
+                title += ' (' + holiday.opcional.religion + ')';
+            }
+            var holidayIcon = $("<img src=" + holidayImgURL + " title='" + title + "' class='icn-holiday'></img>");
+            item.append(holidayIcon);
+            if (!holiday.opcional) {
+                item.parent().parent().removeClass('workable').addClass('holiday');
+            }
+        }
+    }
 
-			if (holiday.opcional && holiday.opcional.religion) {
-				title += ' (' + holiday.opcional.religion + ')';
-			}
-			var holidayIcon = $("<img src=" + holidayImgURL + " title='"+ title + "' class='icn-holiday'></img>");
-			item.append(holidayIcon);
-			if (!holiday.opcional) {
-				item.parent().parent().removeClass('workable').addClass('holiday');
-			}
-		}
-	}
-
-	$('.holiday img.icn-holiday[title]').qtip({style: {classes:'qtip-dark'}, content:{title:'Feriado'}, position: {my: 'bottom left', at: 'top right'}});
-	$('.workable img.icn-holiday[title]').qtip({style: {classes:'qtip-dark'}, content:{title:'Festivo'}, position: {my: 'bottom left', at: 'top right'}});
+    $('.holiday img.icn-holiday[title]').qtip({
+        style: {classes: 'qtip-dark'},
+        content: {title: 'Feriado'},
+        position: {my: 'bottom left', at: 'top right'}
+    });
+    $('.workable img.icn-holiday[title]').qtip({
+        style: {classes: 'qtip-dark'},
+        content: {title: 'Festivo'},
+        position: {my: 'bottom left', at: 'top right'}
+    });
 }
 
-function padDayMonth(value){
-	var str = "" + value;
-	var pad = "00";
-	var ans = pad.substring(0, pad.length - str.length) + str;
-	return ans;
+function padDayMonth(value) {
+    var str = "" + value;
+    var pad = "00";
+    return pad.substring(0, pad.length - str.length) + str;
 }
 
+function getCountry(cb) {
+    var self = this;
+    if(this._country){
+        return this._country;
+    }
+    if (!cb) {
+        cb = function () {
+        }
+    }
+    chrome.storage.sync.get('country', function (items) {
+        self._country = items.country || 'ar';
+        cb();
+    });
+}
 
-
-addHolidays();
+getCountry(function () {
+    addHolidays();
+});
