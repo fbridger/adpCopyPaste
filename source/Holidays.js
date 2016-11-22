@@ -1,17 +1,17 @@
 
 function addHolidaysSelectionUI(){
 
-	var htmlCountrySelect = "<select id='country'>"
-		+ "<option value='ar'>Argentina</option>"
-		+ "<option value='co'>Colombia</option>"
-		+ "<option value='uy'>Uruguay</option>"
-		+ "<option value='ve'>Venezuela</option>"
-		+ "</select>";
+	var htmlCountrySelect = "<select id='country'>";
+    htmlCountrySelect += "<option value='ar'>Argentina</option>";
+    htmlCountrySelect += "<option value='co'>Colombia</option>";
+	htmlCountrySelect += "<option value='uy'>Uruguay</option>";
+	htmlCountrySelect += "<option value='ve'>Venezuela</option>";
+	htmlCountrySelect += "</select>";
 
-	var htmlCountryDiv = "<div class='country'>"
-		+ "<span>Show holidays of </span>" 
-		+ htmlCountrySelect 
-		+ "</div>"
+	var htmlCountryDiv = "<div class='country'>";
+	htmlCountryDiv += "<span>Show holidays of </span>" ;
+	htmlCountryDiv += htmlCountrySelect;
+	htmlCountryDiv += "</div>";
 
 	$('.BTN_Row').first().append(htmlCountryDiv);
 
@@ -19,7 +19,7 @@ function addHolidaysSelectionUI(){
 		var country = $(this).val();
 		document._country = country;
 		chrome.storage.sync.set({'country': country}, addHolidays);
-	})
+	});
 }
 
 function removeHolidays() {
