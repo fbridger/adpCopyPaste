@@ -15,7 +15,7 @@ function save(hours, earningsCode, client, project) {
 
 function addAutoPopulateUI() {
 
-    if ($('a.DoEdit').length == 0 || $('#divStatusText').length > 0)
+    if ($('a.DoEdit').length === 0 || $('#divStatusText').length > 0)
         return;
 
     chrome.storage.sync.get(autoPopulateKeys, function (result) {
@@ -63,7 +63,7 @@ function addAutoPopulateUI() {
             $('div.auto-populate').hide();
             $(document).scrollTop(0);
             return false;
-        })
+        });
 
     });
 
@@ -200,7 +200,7 @@ function addCloneButtons() {
 }
 
 function isEmpty(value) {
-    return !(value && value.trim() != '');
+    return !(value && value.trim() !== '');
 }
 
 addCloneButtons();

@@ -44,3 +44,7 @@ div.auto-populate table {
 div.auto-populate button {	
     margin: 5px;
 }
+.BTN_Row .country {
+	float: right;
+	margin: 2px;
+}

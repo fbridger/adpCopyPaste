@@ -17,18 +17,23 @@
       ],
       "css": [
         "adpCopyPaste.css",
-        "jquery.qtip.min.css"
+        "lib/jquery.qtip.min.css"
       ],
       "js": [
-        "jquery.js",
-        "jquery.qtip.min.js",
+        "lib/jquery.js",
+        "lib/jquery.qtip.min.js",
         "helpers.js",
         "nonWorkableDays.js",
         "adpCopyPaste.js",
         "holidaysStore.js",
         "holidaysArgentina2016.js",
-        "holidaysColombia2016.js",
         "holidaysArgentina2017.js",
+        "holidaysArgentinaFixed.js",
+        "holidaysColombia2017.js",
+        "holidaysColombiaFixed.js",
+        "holidaysUruguayFixed.js",
+        "holidaysVenezuela2017.js",
+        "holidaysVenezuelaFixed.js",
         "Holidays.js"
       ],
       "run_at": "document_end",

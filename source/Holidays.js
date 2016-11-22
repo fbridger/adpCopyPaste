@@ -1,13 +1,46 @@
+
+function addHolidaysSelectionUI(){
+
+	var htmlCountrySelect = "<select id='country'>"
+		+ "<option value='ar'>Argentina</option>"
+		+ "<option value='co'>Colombia</option>"
+		+ "<option value='uy'>Uruguay</option>"
+		+ "<option value='ve'>Venezuela</option>"
+		+ "</select>";
+
+	var htmlCountryDiv = "<div class='country'>"
+		+ "<span>Show holidays of </span>" 
+		+ htmlCountrySelect 
+		+ "</div>"
+
+	$('.BTN_Row').first().append(htmlCountryDiv);
+
+	$('#country').val(document._country).change(function(){
+		var country = $(this).val();
+		document._country = country;
+		chrome.storage.sync.set({'country': country}, addHolidays);
+	})
+}
+
+function removeHolidays() {
+
+	$('.holiday').removeClass('holiday').addClass('workable');
+	$('.icn-holiday').remove();
+}
+
 function addHolidays() {
+
+	removeHolidays();
 
     var yearToUse;
     var beginDateVal = $('#BeginDate').val();
 
-    if (beginDateVal.trim() != '')
+    if (beginDateVal.trim() !== '')
         yearToUse = new Date(beginDateVal).getFullYear();
     else
         yearToUse = new Date().getFullYear();
-    var holidays = getHolidays(getCountry(), yearToUse);
+
+    var holidays = getHolidays(document._country, yearToUse);
 
     for (var i = 0; i < holidays.length; i++) {
         var holiday = holidays[i];
@@ -50,6 +83,8 @@ function addHolidays() {
         content: {title: 'Festivo'},
         position: {my: 'bottom left', at: 'top right'}
     });
+
+    
 }
 
 function padDayMonth(value) {
@@ -58,21 +93,39 @@ function padDayMonth(value) {
     return pad.substring(0, pad.length - str.length) + str;
 }
 
-function getCountry(cb) {
-    var self = this;
-    if(this._country){
-        return this._country;
+function initCountry(cb) {
+    
+    if(document._country){
+        return document._country;
     }
     if (!cb) {
         cb = function () {
-        }
+        };
     }
     chrome.storage.sync.get('country', function (items) {
-        self._country = items.country || 'ar';
+        document._country = items.country || 'ar';
         cb();
     });
 }
 
-getCountry(function () {
+function getCountryName(country) {
+	if (country === "ar")
+		return "Argentina";
+
+	if (country === "co")
+		return "Colombia";
+
+	if (country === "ve")
+		return "Venezuela";
+
+	if (country === "uy")
+		return "Uruguay";
+
+	if (country === "us")
+		return "United States";
+}
+
+initCountry(function () {
+    addHolidaysSelectionUI();
     addHolidays();
 });

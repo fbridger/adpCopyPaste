@@ -1,0 +1,10 @@
+addFixedHoliday("ar", 1,  1,  "Año Nuevo");
+addFixedHoliday("ar", 3,  24, "Día Nacional de la Memoria por la Verdad y la Justicia");
+addFixedHoliday("ar", 4,  2,  "Día del Veterano y de los Caídos en la Guerra de Malvinas");
+addFixedHoliday("ar", 4,  24, "Día de acción por la tolerancia y el respeto entre los pueblos", "nolaborable", { "tipo": "origen", "origen": "armenia"});
+addFixedHoliday("ar", 5,  1,  "Día del Trabajador");
+addFixedHoliday("ar", 5,  25, "Día de la Revolución de Mayo");
+addFixedHoliday("ar", 6,  20, "Paso a la Inmortalidad del General Manuel Belgrano");
+addFixedHoliday("ar", 7,  9,  "Día de la Independencia");
+addFixedHoliday("ar", 12, 8,  "Inmaculada Concepción de María");
+addFixedHoliday("ar", 12, 25, "Navidad");
