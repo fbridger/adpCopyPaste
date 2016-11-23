@@ -48,6 +48,7 @@ function addAutoPopulateUI() {
         uiHtml += '</tr></table>';
         uiHtml += '<button class="yes">Yes, fill the timecard!</button>';
         uiHtml += '<button class="no">No, maybe next time.</button>';
+        uiHtml += '<p>If you want to contribute, fix bugs or add holidays go to <a href="https://github.com/fbridger/adpCopyPaste" target="_blank">GitHub Repository</a></p>'
         uiHtml += '</div>';
 
         $('.TBL_Toolbar').after(uiHtml);
