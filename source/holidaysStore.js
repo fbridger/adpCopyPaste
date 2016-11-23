@@ -2,10 +2,7 @@ var allHolidays = [];
 var fixedHolidays = [];
 
 function addHoliday(country, year, month, day, description, holidayType, traslado, opcional){
-	var tipo ="inamovible";
-
-	if (holidayType)
-		tipo = holidayType;
+	var tipo = holidayType || "inamovible";
 
 	var holiday = { "mes": month, "dia": day, "motivo": description, "tipo": tipo, "traslado": traslado, "opcional": opcional};
 
