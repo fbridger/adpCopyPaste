@@ -3,57 +3,98 @@ function getGridTable() {
 }
 
 function HolidaysHelper(year) {
-    this.pascua = this.calcularPascua(year)
+    this.year = year || new Date().getFullYear();
+    this.calculatePascua();
+    this.parsers = {};
+    this.dates = [];
 }
 
 HolidaysHelper.DayOfWeek = {};
-var daysArray = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-for (var i = 0, length = daysArray.length; i < length; ++i) HolidaysHelper.DayOfWeek[daysArray[i]] = i;
+HolidaysHelper.DaysArray = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+for (var i = 0, lengthD = HolidaysHelper.DaysArray.length; i < lengthD; ++i) {
+    HolidaysHelper.DayOfWeek[HolidaysHelper.DaysArray[i]] = i;
+}
 
-HolidaysHelper.prototype.siguienteDiaSemana = function (diaSemana, fechaInicial, haciaAtras, daysToAdd) {
-    var fecha = new Date(fechaInicial.getTime()),
-        dayAddition = (haciaAtras ? -1 : 1);
+HolidaysHelper.Months = {};
+HolidaysHelper.MonthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+for (var j = 0, lengthM = HolidaysHelper.MonthNames.length; j < lengthM; ++j) {
+    HolidaysHelper.Months[HolidaysHelper.MonthNames[j]] = j;
+}
 
-    while (fecha.getDay() != diaSemana)
-        fecha.setDate(fecha.getDate() + dayAddition);
+HolidaysHelper.prototype.nextWeekDay = function (weekDay, realDate, daysToAdd, backward) {
+    var date = new Date(realDate.getTime()),
+        dayAddition = (backward ? -1 : 1);
 
     if (daysToAdd) {
-        fecha.setDate(fecha.getDate() + daysToAdd)
+        date.setDate(date.getDate() + daysToAdd);
     }
-    return fecha;
+
+    while (date.getDay() !== weekDay) {
+        date.setDate(date.getDate() + dayAddition);
+    }
+
+    return date;
 };
 
-HolidaysHelper.prototype.anteriorDiaSemana = function (diaSemana, fecha, daysToAdd) {
-    return this.siguienteDiaSemana(diaSemana, fecha, true, daysToAdd)
+HolidaysHelper.prototype.previousWeekDay = function (weekDay, date, daysToAdd) {
+    return this.nextWeekDay(weekDay, date, daysToAdd, true);
 };
 
-HolidaysHelper.prototype.calcularPascua = function (year) {
+HolidaysHelper.prototype.addDate = function (date, data) {
+    this.dates.push({date: date, data: data});
+};
+
+HolidaysHelper.prototype.addParser = function (name, parser) {
+    this.parsers[name] = parser;
+};
+
+HolidaysHelper.prototype.getHolidays = function (parserName) {
+    var parser;
+
+    if (parserName && this.parsers.hasOwnProperty(parserName)) {
+        parser = this.parsers[parserName];
+    } else {
+        parser = function (date) {
+            return date;
+        };
+    }
+
+    return this.dates.sort(function (a, b) {
+        return a.date > b.date ? 1 : -1;
+    }).map(function (date) {
+        return parser(date.date, date.data);
+    });
+};
+
+HolidaysHelper.prototype.calculatePascua = function () {
     var a, b, c, d, e;
-    var m = 24, n = 5;
+    var year = this.year, m = 24, n = 5;
 
-    if (year >= 1583 && year <= 1699) {
-        m = 22;
-        n = 2;
-    }
-    else if (year >= 1700 && year <= 1799) {
-        m = 23;
-        n = 3;
-    }
-    else if (year >= 1800 && year <= 1899) {
-        m = 23;
-        n = 4;
-    }
-    else if (year >= 1900 && year <= 2099) {
-        m = 24;
-        n = 5;
-    }
-    else if (year >= 2100 && year <= 2199) {
-        m = 24;
-        n = 6;
-    }
-    else if (year >= 2200 && year <= 2299) {
-        m = 25;
-        n = 0;
+    switch (true) {
+        case (year >= 1583 && year <= 1699):
+            m = 22;
+            n = 2;
+            break;
+        case(year >= 1700 && year <= 1799) :
+            m = 23;
+            n = 3;
+            break;
+        case (year >= 1800 && year <= 1899) :
+            m = 23;
+            n = 4;
+            break;
+        case (year >= 1900 && year <= 2099) :
+            m = 24;
+            n = 5;
+            break;
+        case (year >= 2100 && year <= 2199) :
+            m = 24;
+            n = 6;
+            break;
+        case (year >= 2200 && year <= 2299) :
+            m = 25;
+            n = 0;
+            break;
     }
 
     a = year % 19;
@@ -62,21 +103,19 @@ HolidaysHelper.prototype.calcularPascua = function (year) {
     d = ((a * 19) + m) % 30;
     e = ((2 * b) + (4 * c) + (6 * d) + n) % 7;
 
-    var dia = d + e;
+    var day = d + e;
 
-    if (dia < 10) //Marzo
-        return new Date(year, 2, dia + 22);
-    else { //Abril
+    if (day < 10)
+        return (this.pascua = new Date(year, HolidaysHelper.Months.March, day + 22));
+    else {
 
-        if (dia == 26)
-            dia = 19;
-        else if (dia == 25 && d == 28 && e == 6 && a > 10)
-            dia = 18;
+        if (day == 26)
+            day = 19;
+        else if (day == 25 && d == 28 && e == 6 && a > 10)
+            day = 18;
         else
-            dia -= 9;
+            day -= 9;
 
-        return new Date(year, 3, dia);
+        return (this.pascua = new Date(year, HolidaysHelper.Months.April, day));
     }
 };
-
-HolidaysHelper.prototype.adicionarFeriado = function(){};
