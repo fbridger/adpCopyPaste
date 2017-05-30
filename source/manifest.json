@@ -2,7 +2,7 @@
   "name": "ADP Copy & Paste",
   "short_name": "ADP Copy & Paste",
   "description": "Allows to copy and paste rows in ADP",
-  "version": "1.0.7",
+  "version": "1.1.0",
   "author": "Federico Bridger",
   "homepage_url": "https://ar.linkedin.com/in/federicobridger",
   "icons": {
@@ -34,7 +34,8 @@
         "holidaysUruguayFixed.js",
         "holidaysVenezuela2017.js",
         "holidaysVenezuelaFixed.js",
-        "Holidays.js"
+        "Holidays.js",
+        "DateSelectorHelper.js"
       ],
       "run_at": "document_end",
       "all_frames": true

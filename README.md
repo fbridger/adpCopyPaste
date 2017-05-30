@@ -18,6 +18,12 @@ Thanks a lot to Jaime Giraldo (https://github.com/sposmen) for adding holidays f
 
 ## Releases
 
+### Version 1.1.0
+Date Helpers Previous/Next Week/Month
+
+### Version 1.0.7
+Fixes for Argentina Holidays.
+
 ### Version 1.0.6
 Added Colombia, Uruguay and Venezuela holidays
 
