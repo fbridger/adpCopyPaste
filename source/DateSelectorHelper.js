@@ -37,6 +37,7 @@ DateSelectorHelper.prototype.nextPressed = function (e) {
 DateSelectorHelper.prototype.go = function (sign) {
   this.beginDateContainer.val(this.getFormattedDate(this.setDateChange(this.beginDate, sign)));
   this.endDateContainer.val(this.getFormattedDate(this.setDateChange(this.endDate, sign)));
+  this.btnGo.click();
 };
 
 DateSelectorHelper.prototype.setDateChange = function (date, sign) {
